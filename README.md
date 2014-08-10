@@ -39,6 +39,8 @@ until spitting out an error.
 * `ok_code`, `error_code`, `ok_text`, `error_text` are configuration for
   you to use, to configure against LB quirks. The default config should
 work against ELBs (Amazon elastic LB).
+* `header_fields`: custom fields hash to be added to headers (e.g. x-app-server,
+  x-revision etc.)
 
 ## Headers
 

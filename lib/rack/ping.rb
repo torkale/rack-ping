@@ -13,13 +13,14 @@ module Rack
         :ok_code => 200,
         :timeout_secs => 5,
         :error_text => 'error',
-        :error_code => 500
+        :error_code => 500,
+        :header_fields => {}
       }
 
       yield self if block_given?
     end
 
-    %w[version check_url ok_regex ok_text ok_code timeout_secs error_text error_code].each do |meth|
+    %w[version check_url ok_regex ok_text ok_code timeout_secs error_text error_code header_fields].each do |meth|
       define_method(meth) { |value| @config[meth.to_sym] = value }
     end
 
@@ -58,7 +59,7 @@ module Rack
             'Content-Type' => 'text/html',
             'x-app-version' => @config[:version],
             'x-ping-error'  => reason
-          }),
+          }).merge(@config[:header_fields]),
           [@config[:error_text]]   ]
     end
 
@@ -67,7 +68,7 @@ module Rack
           NO_CACHE.merge({
             'Content-Type' => 'text/html',
             'x-app-version' => @config[:version]
-          }),
+      }).merge(@config[:header_fields]),
           [@config[:ok_text]]   ]
     end
     private

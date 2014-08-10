@@ -112,4 +112,12 @@ describe Rack::Ping do
     must_bust_cache(h)
   end
 
+  it "allows custom ping fields" do
+    s, h, b = Rack::Ping.new(app) do |ping| 
+      ping.header_fields({"x-app-server" => "i-123456"})
+    end.call({})
+    h['x-app-server'].must_equal 'i-123456'
+
+  end
+
 end
